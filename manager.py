@@ -2,15 +2,17 @@
 
 Python Based Password Manager
 
-- [ ] Enter email and password
+- [x] Enter email and password
 - [ ] Save/append to file
-- [ ] Create new file if one doesn't exist
-- [ ] Enter password to access
-    - [ ] If wrong password, prompt
-    - [ ] Correct -> Send user to options
-- [ ] Provide user with options
+- [x] Create new file if one doesn't exist
+- [x] Enter password to access
+    - [x] If wrong password, prompt
+    - [x] Correct -> Send user to options
+- [x] Provide user with options
     - [ ] Enter website to see username/password
     - [ ] Quit program with "q"
+- [ ] Create a way to encrypt or secure the passwords.json file
+
 
 '''
 
