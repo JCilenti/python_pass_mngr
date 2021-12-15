@@ -1,0 +1,6 @@
+http://introtopython.org/terminal_apps.html
+https://www.guru99.com/python-check-if-file-exists.html
+https://nitratine.net/blog/post/how-to-hash-passwords-in-python/
+https://www.tutorialspoint.com/python/python_command_line_arguments.htm
+https://www.codegrepper.com/code-examples/python/how+to+refresh+console+in+python
+https://stackoverflow.com/questions/27631629/masking-user-input-in-python-with-asterisks
