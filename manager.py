@@ -55,25 +55,47 @@ def checkAccess(username_original, password_original):
         print("Username or password is incorrect!")
         return 1
 
+def printBanner():
+    print("#"*50)
+    print("#" + " "*48 + "#")
+    print("#" + " "*7 + "WELCOME TO PYTHON PASSWORD MANAGER" + " "*7 + "#")
+    print("#" + " "*48 + "#")
+    print("#"*50)
+
 def checkFile():
     if path.exists("passwords.json"):
         print("File exists")
     else:
         out_file = open("passwords.json", "a")
-        out_file.write("##### Python Passwords file #####")
+        out_file.write("##### Python Passwords File #####")
         out_file.close()
 
-def checkPrompt():
-    prompt_value = input("Enter a choice: ")
-    if prompt_value == 1:
-        print("Find username in JSON")
-    elif prompt_value == 2: 
-        print("Find username in JSON")
-    elif prompt_value == 3: 
-        print("Search by website")
+def promptUser():
+    user_input = input("Select a choice from the list: ")
+    return user_input
+    # if user_input == 1:
+    #     return 0
+    # elif user_input == 2: 
+    #     return 1
+    # elif user_input == 3: 
+    #     return 2
+    # else:
+    #     print("NO!!!!!!")
 
 
+def checkUser():
+    if checkAccess(username_original, password_original) == 0:
+        print("Hello")
+    else:
+        print("Denied Access")
 
+        #promptUser()
+        #if promptUser() == 0:
+            #print("Find username in JSON")
+        #elif promptUser() == 1:
+            #print("Find password in JSON")
+        #elif promptUser() == 2:
+            #print("Search by website")
 
 
 # check number of occurences of password
@@ -84,16 +106,15 @@ def checkPrompt():
 # print bad security in terminal and highlight or something
 
 
-
 if __name__== "__main__":
-    print("#"*50)
-    print("#" + " "*48 + "#")
-    print("#" + " "*7 + "WELCOME TO PYTHON PASSWORD MANAGER" + " "*7 + "#")
-    print("#" + " "*48 + "#")
-    print("#"*50)
+    printBanner()
     checkFile()
-    if checkAccess(username_original, password_original) == 0:
-        checkPrompt()
+    checkUser()
+    promptUser()
+
+    #print(promptUser())
+    #if checkAccess(username_original, password_original) == 0:
+        #promptUser()
 
 
 
