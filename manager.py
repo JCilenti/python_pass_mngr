@@ -1,5 +1,4 @@
 '''
-
 Python Based Password Manager
 
 - [x] Enter email and password
@@ -13,15 +12,16 @@ Python Based Password Manager
     - [ ] Quit program with "q"
 - [ ] Create a way to encrypt or secure the passwords.json file
 
-
 '''
 
 import os.path
 from os import path
 import hashlib
+import json
 
 users = {} 
-
+data = {}
+data["users"] = []
 # Add a user
 username_original = 'atomas22' # The users username
 password_original = 'Joey6870' # The users password
@@ -47,9 +47,10 @@ def checkAccess(username_original, password_original):
         os.system('clear')
         print("Welcome {}".format(username_unverified))
         print("Select a choice from the list: ")
-        print("[1] Get a username")
-        print("[2] Get a password")
+        print("[1] Search for Username")
+        print("[2] Search for Password")
         print("[3] Search by website")
+        print("[4] Enter New Credentials")
         return 0
     else:
         print("Username or password is incorrect!")
@@ -63,39 +64,79 @@ def printBanner():
     print("#"*50)
 
 def checkFile():
-    if path.exists("passwords.json"):
+    if path.exists("passwords.txt"):
         print("File exists")
+        outfile = open("passwords.txt", "a")
     else:
-        out_file = open("passwords.json", "a")
-        out_file.write("##### Python Passwords File #####")
+        print("[CREATING FILE...]")
+        out_file = open("passwords.txt", "a")
         out_file.close()
-
-def promptUser():
-    user_input = input("Select a choice from the list: ")
-    return user_input
-    # if user_input == 1:
-    #     return 0
-    # elif user_input == 2: 
-    #     return 1
-    # elif user_input == 3: 
-    #     return 2
-    # else:
-    #     print("NO!!!!!!")
-
 
 def checkUser():
     if checkAccess(username_original, password_original) == 0:
-        print("Hello")
+        promptUser()
     else:
         print("Denied Access")
 
-        #promptUser()
-        #if promptUser() == 0:
-            #print("Find username in JSON")
-        #elif promptUser() == 1:
-            #print("Find password in JSON")
-        #elif promptUser() == 2:
-            #print("Search by website")
+def promptUser():
+    user_input = input("Select a choice from the list: ")
+    if int(user_input) == 1:
+        print("getting your username")
+        getCredentials()
+    elif int(user_input) == 2:
+        print("getting your password")
+        getCredentials()
+    elif int(user_input) == 3:
+        print("Searching by website")
+        getCredentials()
+    elif int(user_input) == 4:
+        print("Adding new credentials")
+        addCredentials()
+    else:
+        print("Choice out of range. [Exiting...]")
+        return int(user_input)
+
+def getCredentials():
+    # The index key or value will be either password or username
+    # Based on the choice of the user, return either key or value
+    print("getting your username for you")
+    
+
+def websiteSearch():
+    # this will be some index in the JSON file
+    # once webiste is found, present user with website, username and password
+    print("Getting credentials website")
+
+def addCredentials():
+    # prompt user for webiste, username, and password
+    # individually write these to a line in the JSON file
+    # file must be opened, written to, and closed
+    os.system('clear')
+    site = input("Enter the name of the wesbite or app: ")
+    os.system('clear')
+    user = input("Enter your username: ")
+    os.system('clear')
+    passwd = input("Enter your password: ")
+    passwd2 = input("Re-enter your password: ")
+    os.system('clear')
+    if passwd == passwd2:
+        print("Credentials entered successfully. [SAVING...]")
+        data["users"].append({
+            "website" : str(site),
+            "username" : str(user),
+            "password" : str(passwd)
+            })
+        with open('passwords.txt', 'a') as outfile:
+            json.dump(data, outfile)
+        # there should also be a check for whether creds exist already
+        # save to file here
+        # call file saving function
+    else:
+        print("Passwords do not match.")
+        passwd2 = input("Please Re-enter your password: ")
+
+# def savetoFile()
+    # this function will save creds to JSON passwords file
 
 
 # check number of occurences of password
@@ -105,13 +146,14 @@ def checkUser():
 # if password more than a certain number
 # print bad security in terminal and highlight or something
 
+# add a system that checks the user's entered password against personal security
+# does it have 15 characters? symbols? letters and numbers?
+
 
 if __name__== "__main__":
     printBanner()
     checkFile()
     checkUser()
-    promptUser()
-
     #print(promptUser())
     #if checkAccess(username_original, password_original) == 0:
         #promptUser()
