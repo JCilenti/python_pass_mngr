@@ -2,14 +2,14 @@
 Python Based Password Manager
 
 - [x] Enter email and password
-- [ ] Save/append to file
+- [x] Save/append to file
 - [x] Create new file if one doesn't exist
 - [x] Enter password to access
     - [x] If wrong password, prompt
     - [x] Correct -> Send user to options
 - [x] Provide user with options
-    - [ ] Enter website to see username/password
-    - [ ] Quit program with "q"
+    - [x] Enter website to see username/password
+    - [x] Quit program with "q"
 - [ ] Create a way to encrypt or secure the passwords.json file
 
 '''
@@ -51,6 +51,7 @@ def checkAccess(username_original, password_original):
         print("[2] Search for Password")
         print("[3] Search by website")
         print("[4] Enter New Credentials")
+        print("[5] Quit Program")
         return 0
     else:
         print("Username or password is incorrect!")
@@ -81,38 +82,107 @@ def checkUser():
 def promptUser():
     user_input = input("Select a choice from the list: ")
     if int(user_input) == 1:
-        print("getting your username")
-        getCredentials()
+        print("[GETTING DATA BY USERNAME...]")
+        os.system('clear')
+        getCredentialsUser()
     elif int(user_input) == 2:
-        print("getting your password")
-        getCredentials()
+        print("[GETTING DATA BY PASSWORD...]")
+        os.system('clear')
+        getCredentialsPass()
     elif int(user_input) == 3:
-        print("Searching by website")
-        getCredentials()
+        print("[SEARCHING BY KEYWORD...]")
+        os.system('clear')
+        getCredentialsWeb()
     elif int(user_input) == 4:
-        print("Adding new credentials")
+        print("[ADDING NEW CREDENTIALS...]")
+        os.system('clear')
         addCredentials()
+    elif int(user_input) == 5:
+        print("[QUITTING...]")
+        print("GOODBYE!")
+        exit()
     else:
         print("Choice out of range. [Exiting...]")
-        return int(user_input)
 
-def getCredentials():
+def getCredentialsUser():
     # The index key or value will be either password or username
     # Based on the choice of the user, return either key or value
-    print("getting your username for you")
-    
+    username_ask = input("Enter username to search: ")
+    with open("passwords.txt") as outfile:
+        data = json.load(outfile)
+        for i in data.values():
+            for u in i:
+                user_data = list(u.values())
+                if username_ask in user_data[1]:
+                    print("[FETCHING USER DATA...]")
+                    print(user_data)
+                else:
+                    print("Data not found. [EXITING...]")
 
-def websiteSearch():
-    # this will be some index in the JSON file
-    # once webiste is found, present user with website, username and password
-    print("Getting credentials website")
+def getCredentialsPass():
+    # The index key or value will be either password or username
+    # Based on the choice of the user, return either key or value
+    password_ask = input("Enter password to search: ")
+    with open("passwords.txt") as outfile:
+        data = json.load(outfile)
+        for i in data.values():
+            for u in i:
+                user_data = list(u.values())
+                if password_ask in user_data[2]:
+                    print("[FETCHING USER DATA...]")
+                    print(user_data)
+                else:
+                    print("Data not found. [EXITING...]")
+
+def getCredentialsWeb():
+    # The index key or value will be either password or username
+    # Based on the choice of the user, return either key or value
+    website_ask = input("Enter website to search: ")
+    with open("passwords.txt") as outfile:
+        data = json.load(outfile)
+        for i in data.values():
+            for u in i:
+                user_data = list(u.values())
+                if website_ask in user_data[0]:
+                    print("[FETCHING USER DATA...]")
+                    print(user_data)
+                else:
+                    print("Data not found. [EXITING...]")    
 
 def addCredentials():
     # prompt user for webiste, username, and password
     # individually write these to a line in the JSON file
     # file must be opened, written to, and closed
-    os.system('clear')
-    site = input("Enter the name of the wesbite or app: ")
+    with open('passwords.txt') as outfile:
+        data = json.load(outfile)
+        os.system('clear')
+        site = input("Enter the name of the wesbite or app: ")
+        for i in data.values():
+            for u in i:
+                user_data = list(u.values())
+                if site in user_data[0]:
+                    print("Credentials exist for this site")
+                    print(user_data[0])
+                    print("Would you like to modify credentials?")
+                    user_decision = input("y/n: ")
+                    if user_decision == "y":
+                        # remove either password, website, or username
+                        # -1 = pass
+                        # -2 = user
+                        # -3 = website
+                        del_items = input("Remove Website, User, Pass or All?: ")
+                        if del_items == "website":
+                            user_data.pop(-3)
+                            new_website = input("Enter new website: ")
+                            data['users'].append({
+                                "website" : str(new_website)
+                            })
+                            exit()
+                        
+                    else:
+                        continue
+                else:
+                    continue
     os.system('clear')
     user = input("Enter your username: ")
     os.system('clear')
@@ -134,10 +204,14 @@ def addCredentials():
     else:
         print("Passwords do not match.")
         passwd2 = input("Please Re-enter your password: ")
-
-# def savetoFile()
-    # this function will save creds to JSON passwords file
-
+        print("Credentials entered successfully. [SAVING...]")
+        data["users"].append({
+            "website" : str(site),
+            "username" : str(user),
+            "password" : str(passwd)
+            })
+        with open('passwords.txt', 'a') as outfile:
+            json.dump(data, outfile)
 
 # check number of occurences of password
     # iterate through file with for loop
