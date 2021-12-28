@@ -67,10 +67,12 @@ def printBanner():
 def checkFile():
     if path.exists("passwords.txt"):
         print("File exists")
-        outfile = open("passwords.txt", "a")
+        out_file = open("passwords.txt", "a")
     else:
         print("[CREATING FILE...]")
         out_file = open("passwords.txt", "a")
+        welcome_str = "##### This is the Password File #####\n"
+        out_file.write(welcome_str)
         out_file.close()
 
 def checkUser():
@@ -109,7 +111,7 @@ def getCredentialsUser():
     # Based on the choice of the user, return either key or value
     username_ask = input("Enter username to search: ")
     with open("passwords.txt") as outfile:
-        data = json.load(outfile)
+        data = json.loads(outfile)
         for i in data.values():
             for u in i:
                 user_data = list(u.values())
@@ -124,7 +126,7 @@ def getCredentialsPass():
     # Based on the choice of the user, return either key or value
     password_ask = input("Enter password to search: ")
     with open("passwords.txt") as outfile:
-        data = json.load(outfile)
+        data = json.loads(outfile)
         for i in data.values():
             for u in i:
                 user_data = list(u.values())
@@ -139,7 +141,7 @@ def getCredentialsWeb():
     # Based on the choice of the user, return either key or value
     website_ask = input("Enter website to search: ")
     with open("passwords.txt") as outfile:
-        data = json.load(outfile)
+        data = json.loads(outfile)
         for i in data.values():
             for u in i:
                 user_data = list(u.values())
@@ -154,7 +156,7 @@ def addCredentials():
     # individually write these to a line in the JSON file
     # file must be opened, written to, and closed
     with open('passwords.txt') as outfile:
-        data = json.load(outfile)
+        data = json.loads(outfile)
         os.system('clear')
         site = input("Enter the name of the wesbite or app: ")
         for i in data.values():
