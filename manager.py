@@ -17,9 +17,14 @@ Python Based Password Manager
    version of the dictionary. How to stop this from happening?
       - copy file contents, re-write file with new contents?
       - append but make append actually work
-2. When new file is created, it appends to a dictonary that doesn't exist. 
-The file has to be opened with 'w' but appended with add creds
+2. When new file is created, it appends to a dictonary that doesn't 
+   exist. 
+   The file has to be opened with 'w' but appended with add creds
 
+3. What if I indexed the value of user for the dict. Every time a new 
+   entry is made,
+   a new dict structure is created (Ex. dict[user1]=[], dict[usern]=[]
+   
 '''
 
 import os.path
