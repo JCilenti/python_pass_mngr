@@ -12,6 +12,19 @@ Python Based Password Manager
     - [x] Quit program with "q"
 - [ ] Create a way to encrypt or secure the passwords.json file
 
+** Problems to address:
+1. When adding new credentials to the file, it creates a whole new 
+   version of the dictionary. How to stop this from happening?
+      - copy file contents, re-write file with new contents?
+      - append but make append actually work
+2. When new file is created, it appends to a dictonary that doesn't 
+   exist. 
+   The file has to be opened with 'w' but appended with add creds
+
+3. What if I indexed the value of user for the dict. Every time a new 
+   entry is made,
+   a new dict structure is created (Ex. dict[user1]=[], dict[usern]=[]
+   
 '''
 
 import os.path
@@ -19,7 +32,7 @@ from os import path
 import hashlib
 import json
 
-users = {} 
+users = {}
 data = {}
 data["users"] = []
 # Add a user
@@ -67,12 +80,13 @@ def printBanner():
 def checkFile():
     if path.exists("passwords.txt"):
         print("File exists")
-        out_file = open("passwords.txt", "a")
+        #out_file = open("passwords.txt", "a")
     else:
         print("[CREATING FILE...]")
-        out_file = open("passwords.txt", "a")
-        welcome_str = "##### This is the Password File #####\n"
-        out_file.write(welcome_str)
+        #out_file = open("passwords.txt", "a")
+        out_file = open("passwords.txt", "w")
+        #welcome_str = "##### This is the Password File #####\n"
+        #out_file.write(welcome_str)
         out_file.close()
 
 def checkUser():
@@ -110,23 +124,28 @@ def getCredentialsUser():
     # The index key or value will be either password or username
     # Based on the choice of the user, return either key or value
     username_ask = input("Enter username to search: ")
-    with open("passwords.txt") as outfile:
-        data = json.loads(outfile)
-        for i in data.values():
-            for u in i:
-                user_data = list(u.values())
-                if username_ask in user_data[1]:
-                    print("[FETCHING USER DATA...]")
-                    print(user_data)
-                else:
-                    print("Data not found. [EXITING...]")
+    with open("passwords.txt") as out_file:
+        if os.stat("passwords.txt").st_size == 0:
+            print("File is Empty! [CLOSING...]")
+            # prompt the user if they would like to add creds here
+        else:
+            data = json.load(out_file)
+            for i in data.values():
+                for u in i:
+                    user_data = list(u.values())
+                    #if username_ask in user_data[1]:
+                    if username_ask in user_data[1]:
+                        print("[FETCHING USER DATA...]")
+                        print(user_data)
+                    else:
+                        print("Data not found. [EXITING...]")
 
 def getCredentialsPass():
     # The index key or value will be either password or username
     # Based on the choice of the user, return either key or value
     password_ask = input("Enter password to search: ")
-    with open("passwords.txt") as outfile:
-        data = json.loads(outfile)
+    with open("passwords.txt") as out_file:
+        data = json.load(out_file)
         for i in data.values():
             for u in i:
                 user_data = list(u.values())
@@ -140,8 +159,8 @@ def getCredentialsWeb():
     # The index key or value will be either password or username
     # Based on the choice of the user, return either key or value
     website_ask = input("Enter website to search: ")
-    with open("passwords.txt") as outfile:
-        data = json.loads(outfile)
+    with open("passwords.txt") as out_file:
+        data = json.load(out_file)
         for i in data.values():
             for u in i:
                 user_data = list(u.values())
@@ -155,8 +174,8 @@ def addCredentials():
     # prompt user for webiste, username, and password
     # individually write these to a line in the JSON file
     # file must be opened, written to, and closed
-    with open('passwords.txt') as outfile:
-        data = json.loads(outfile)
+    with open('passwords.txt') as out_file:
+        data = json.load(out_file)
         os.system('clear')
         site = input("Enter the name of the wesbite or app: ")
         for i in data.values():
@@ -198,8 +217,8 @@ def addCredentials():
             "username" : str(user),
             "password" : str(passwd)
             })
-        with open('passwords.txt', 'a') as outfile:
-            json.dump(data, outfile)
+        with open('passwords.txt', 'a') as out_file:
+            json.dump(data, out_file)
         # there should also be a check for whether creds exist already
         # save to file here
         # call file saving function
@@ -212,8 +231,8 @@ def addCredentials():
             "username" : str(user),
             "password" : str(passwd)
             })
-        with open('passwords.txt', 'a') as outfile:
-            json.dump(data, outfile)
+        with open('passwords.txt', 'a') as out_file:
+            json.dump(data, out_file)
 
 # check number of occurences of password
     # iterate through file with for loop
