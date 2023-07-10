@@ -127,6 +127,8 @@ def getCredentialsUser():
     with open("passwords.txt") as out_file:
         if os.stat("passwords.txt").st_size == 0:
             print("File is Empty! [CLOSING...]")
+            printBanner()
+            promptUser()
             # prompt the user if they would like to add creds here
         else:
             data = json.load(out_file)
