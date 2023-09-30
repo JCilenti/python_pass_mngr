@@ -11,6 +11,7 @@ Python Based Password Manager
     - [x] Enter website to see username/password
     - [x] Quit program with "q"
 - [ ] Create a way to encrypt or secure the passwords.json file
+- [ ] First time authentication for new users
 
 ** Problems to address:
 1. When adding new credentials to the file, it creates a whole new 
@@ -39,6 +40,35 @@ data["users"] = []
 username_original = 'atomas22' # The users username
 password_original = 'Joey6870' # The users password
 
+'''
+
+Generate password code
+
+import random
+import string
+
+length = 15
+
+password = ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+print(password)
+'''
+
+
+'''
+def new_user_login():
+new_user_login = input("Are you a new user? (Y/N)")
+    if new_user_login == "Y" or "y":
+        new_username = input("Enter Your Username: ")
+        new_password = input("Enter Your Password: ")
+        new_password_2 = input("Please Re-Enter Your Password: ")
+        if new_password != new_password_2:
+            print("You Entered the Wrong Password!")
+            new_password_2 = input("Please Re-Enter Your Password: ")
+'''
+
+
+
 def checkAccess(username_original, password_original):
     salt = os.urandom(32) # A new salt for this user
     key = hashlib.pbkdf2_hmac('sha256', password_original.encode('utf-8'), salt, 100000)
@@ -48,6 +78,7 @@ def checkAccess(username_original, password_original):
     }
 
     # Verification attempt
+    
     username_unverified = input("USERNAME: ")
     password_unverified = input("PASSWORD: ")
 
@@ -76,6 +107,30 @@ def printBanner():
     print("#" + " "*7 + "WELCOME TO PYTHON PASSWORD MANAGER" + " "*7 + "#")
     print("#" + " "*48 + "#")
     print("#"*50)
+    
+    lock_banner = """
+    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    MMMMMMMMMMMMMMMWNKOOOOKNWMMMMMMMMMMMMMMM
+    MMMMMMMMMMMMMXkc,......,ckXMMMMMMMMMMMMM
+    MMMMMMMMMMMMKc..'cdxxdc'..cKMMMMMMMMMMMM
+    MMMMMMMMMMMXc..:0WMMMMW0:..cXMMMMMMMMMMM
+    MMMMMMMMMMM0,.'kMMMMMMMMk'.,0MMMMMMMMMMM
+    MMMMMMMMMMMO,..dXXXXXXXXd..,OMMMMMMMMMMM
+    MMMMMMMMMNk;....''''''''....;kNMMMMMMMMM
+    MMMMMMMMMO,..................,OMMMMMMMMM
+    MMMMMMMMMO'......,oddo,......'OMMMMMMMMM
+    MMMMMMMMMO'......dNMMNd......'OMMMMMMMMM
+    MMMMMMMMMO'......,OWWO,......'OMMMMMMMMM
+    MMMMMMMMMO'.......xWWx.......'OMMMMMMMMM
+    MMMMMMMMMO'.......cOOc.......'OMMMMMMMMM
+    MMMMMMMMM0:..................:0MMMMMMMMM
+    MMMMMMMMMWKdccc::::::::::cccdKWMMMMMMMMM
+    MMMMMMMMMMMMMWWWWWWWWWWWWWWMMMMMMMMMMMMM
+    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+    """
+    print(lock_banner)
 
 def checkFile():
     if path.exists("passwords.txt"):
@@ -130,6 +185,7 @@ def getCredentialsUser():
             printBanner()
             promptUser()
             # prompt the user if they would like to add creds here
+            # THIS IS UNNECESSARY
         else:
             data = json.load(out_file)
             for i in data.values():
