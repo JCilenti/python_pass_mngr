@@ -54,7 +54,7 @@ def user_prompt_response():
         os.system('clear')
         print("[GETTING DATA BY USERNAME...]")
         os.system('clear')
-        #getCredentialsUser()
+        getCredentialsUser()
     if user_choice == 2:
         print("[GETTING DATA BY PASSWORD...]")
         os.system('clear')
@@ -127,10 +127,6 @@ def checkFile():
 
 
 # Its time to start handling input
-# Experiment with JSON
-
-
-
 def addCredentials():
     # open json file
     # ask user for site, username, and pass
@@ -141,9 +137,7 @@ def addCredentials():
     passw = input('Enter password: ')
 
     creds_dict = {
-        "site": site,
-        "username": user,
-        "password": passw
+        site: {"username": user, "password": passw},
     }
 
     print("Is this the correct data to be entered: ")
@@ -158,76 +152,25 @@ def addCredentials():
             pass_file.write(json_creds)
             print("[CREDENTIALS ENTERED SUCCESSFULLY...]")
         # return to home screen here
+        os.system('clear')
+        prompt()
     else: 
         os.system('clear')
         addCredentials()
-'''
-    # prompt user for webiste, username, and password
-    # individually write these to a line in the JSON file
-    # file must be opened, written to, and closed
-    with open('passwords.txt') as out_file:
-        data = json.load(out_file)
-        os.system('clear')
-        site = input("Enter the name of the wesbite or app: ")
-        for i in data.values():
-            for u in i:
-                user_data = list(u.values())
-                if site in user_data[0]:
-                    print("Credentials exist for this site")
-                    print(user_data[0])
-                    print("Would you like to modify credentials?")
-                    user_decision = input("y/n: ")
-                    if user_decision == "y":
-                        # remove either password, website, or username
-                        # -1 = pass
-                        # -2 = user
-                        # -3 = website
-                        del_items = input("Remove Website, User, Pass or All?: ")
-                        if del_items == "website":
-                            user_data.pop(-3)
-                            new_website = input("Enter new website: ")
-                            data['users'].append({
-                                "website" : str(new_website)
-                            })
-                            exit()
-                        
-                    else:
-                        continue
-                else:
-                    continue
-    os.system('clear')
-    user = input("Enter your username: ")
-    os.system('clear')
-    passwd = input("Enter your password: ")
-    passwd2 = input("Re-enter your password: ")
-    os.system('clear')
-    if passwd == passwd2:
-        print("Credentials entered successfully. [SAVING...]")
-        data["users"].append({
-            "website" : str(site),
-            "username" : str(user),
-            "password" : str(passwd)
-            })
-        with open('passwords.txt', 'a') as out_file:
-            json.dump(data, out_file)
-        # there should also be a check for whether creds exist already
-        # save to file here
-        # call file saving function
-    else:
-        print("Passwords do not match.")
-        passwd2 = input("Please Re-enter your password: ")
-        print("Credentials entered successfully. [SAVING...]")
-        data["users"].append({
-            "website" : str(site),
-            "username" : str(user),
-            "password" : str(passwd)
-            })
-        with open('passwords.txt', 'a') as out_file:
-            json.dump(data, out_file)
-
-
 
 def getCredentialsUser():
+    with open('../../passwords.json', 'r') as creds_file:
+        json_creds = [json.loads(line) for line in creds_file]
+    # this is still broken
+    # JSON apparently can't handle multiple dictionaries
+    # might be able to make the file one big dictionary with 
+    # keys as the site name and another dictionary within 
+    # the inner dictionary holds the username and pass
+    # like this: {GMail: {username: 123@gmail.com, passsword: ******}, 
+    #             Schwabb: {username: 12345, password: *******}, 
+    #             Facebook: {username: 12345, password: ******}}
+
+'''
     # The index key or value will be either password or username
     # Based on the choice of the user, return either key or value
     username_ask = input("Enter username to search: ")
