@@ -14,7 +14,7 @@ def check_for_creds():
 
     #creds_file_dir = input("Please enter your creds file directory: ")
     # '../../creds.txt'
-    creds_file = open('../../creds.txt', 'r')
+    creds_file = open('../../passwd_mngr_creds.txt', 'r')
     #creds_file = open(creds_file_dir, 'r')
     password = creds_file.readlines(1)[0]
     #print(password)
@@ -128,25 +128,22 @@ def checkFile():
 
 # Its time to start handling input
 def addCredentials():
-    # open json file
-    # ask user for site, username, and pass
-    # write to file
-    # close file
     site = input("Enter website or source: ")
     user = input('Enter username: ')
     passw = input('Enter password: ')
 
-    creds_dict = {
-        site: {"username": user, "password": passw},
-    }
-
+    creds_list = []
+    creds_dict = {"credentials": creds_list}
+    data_for_storage = {"site": site, "username": user, "password": passw}
+    creds_list = [data_for_storage]
+    creds_dict["credentials"] += creds_list
+    # creds_dict["credentials"] += creds_list
     print("Is this the correct data to be entered: ")
     print(creds_dict)
     response = input("y/n?: ")
     if response == "y":
         # serialize the data to be written to json file
         json_creds = json.dumps(creds_dict, indent=4)
-
         # write to json now
         with open('../../passwords.json', 'a') as pass_file:
             pass_file.write(json_creds)
@@ -160,7 +157,10 @@ def addCredentials():
 
 def getCredentialsUser():
     with open('../../passwords.json', 'r') as creds_file:
-        json_creds = [json.loads(line) for line in creds_file]
+        data = json.load(creds_file)
+        for i in data['credentials']:
+            print(i)
+        #json_creds = [json.loads(line) for line in creds_file]
     # this is still broken
     # JSON apparently can't handle multiple dictionaries
     # might be able to make the file one big dictionary with 
